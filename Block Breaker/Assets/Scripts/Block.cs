@@ -10,11 +10,20 @@ public class Block : MonoBehaviour
     private AudioClip _destroyedSound;
 
     [SerializeField]
-    GameObject _blockSparksVfx;
+    private GameObject _blockSparksVfx;
+
+    [SerializeField]
+    private int _maxHits;
+
+    [SerializeField]
+    private Sprite[] _hitSprites;
 
     #endregion
 
     #region State
+
+    [SerializeField]
+    private int _timesHit;
 
     #endregion
 
@@ -48,8 +57,28 @@ public class Block : MonoBehaviour
     {
         if (gameObject.CompareTag("Breakable"))
         {
+            HandleHit();
+        }
+    }
+
+    private void HandleHit()
+    {
+        _timesHit++;
+
+        if (_timesHit >= _maxHits)
+        {
             DestroyBlock();
         }
+        else
+        {
+            ShowNextHitSprite();
+        }
+    }
+
+    private void ShowNextHitSprite()
+    {
+        var spriteIndex = _timesHit - 1;
+        GetComponent<SpriteRenderer>().sprite = _hitSprites[spriteIndex];
     }
 
     private void DestroyBlock()
