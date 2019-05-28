@@ -62,5 +62,10 @@ public class GameStatus : MonoBehaviour
         _scoreText.text = _currentScore.ToString();
     }
 
+    public void ResetGame()
+    {
+        Destroy(gameObject);
+    }
+
     #endregion
 }

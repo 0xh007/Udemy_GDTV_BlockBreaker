@@ -9,6 +9,9 @@ public class Block : MonoBehaviour
     [SerializeField]
     private AudioClip _destroyedSound;
 
+    [SerializeField]
+    GameObject _blockSparksVfx;
+
     #endregion
 
     #region State
@@ -44,6 +47,11 @@ public class Block : MonoBehaviour
         Destroy(gameObject);
         _level.BlockDestroyed();
         _gameStatus.AddToScore();
+    }
+
+    private void TriggerSparklesVfx()
+    {
+        GameObject sparkles = Instantiate(_blockSparksVfx, transform.position, transform.rotation);
     }
 
     #endregion
