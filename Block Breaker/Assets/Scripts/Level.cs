@@ -28,7 +28,7 @@ public class Level : MonoBehaviour
 
     #region Public Methods
 
-    public void CountBreakableBlocks()
+    public void CountBlocks()
     {
         _breakableBlocks++;
     }

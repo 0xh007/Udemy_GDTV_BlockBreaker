@@ -30,15 +30,26 @@ public class Block : MonoBehaviour
 
     private void Start()
     {
+        CountBreakableBlocks();
+    }
+
+    private void CountBreakableBlocks()
+    {
         _level = FindObjectOfType<Level>();
         _gameStatus = FindObjectOfType<GameStatus>();
 
-        _level.CountBreakableBlocks();
+        if (gameObject.CompareTag("Breakable"))
+        {
+            _level.CountBlocks();
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        DestroyBlock();
+        if (gameObject.CompareTag("Breakable"))
+        {
+            DestroyBlock();
+        }
     }
 
     private void DestroyBlock()
@@ -47,11 +58,13 @@ public class Block : MonoBehaviour
         Destroy(gameObject);
         _level.BlockDestroyed();
         _gameStatus.AddToScore();
+        TriggerSparklesVfx();
     }
 
     private void TriggerSparklesVfx()
     {
-        GameObject sparkles = Instantiate(_blockSparksVfx, transform.position, transform.rotation);
+        var sparkles = Instantiate(_blockSparksVfx, transform.position, transform.rotation);
+        Destroy(sparkles, 1f);
     }
 
     #endregion
