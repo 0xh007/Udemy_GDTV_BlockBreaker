@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Paddle : MonoBehaviour
 {
@@ -18,15 +16,16 @@ public class Paddle : MonoBehaviour
     #endregion
 
     // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    private void Update () {
 	    var mousePosInUnits = Input.mousePosition.x / Screen.width * screenWidthInUnits;
-        var paddlePos = new Vector2(transform.position.x, transform.position.y);
-	    paddlePos.x = Mathf.Clamp(mousePosInUnits, minXUnits, maxXUnits);
-	    transform.position = paddlePos;
-	}
+	    var position = transform.position;
+	    var paddlePos = new Vector2(position.x, position.y)
+	    {
+		    x = Mathf.Clamp(mousePosInUnits, minXUnits, maxXUnits)
+	    };
+	    position = paddlePos;
+	    transform.position = position;
+    }
 }

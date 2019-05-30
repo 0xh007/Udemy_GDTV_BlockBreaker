@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
     #region Configuration Parameters
 
-    [SerializeField]
+    [SerializeField] 
     private Paddle paddle1;
 
     [SerializeField]
@@ -24,7 +22,7 @@ public class Ball : MonoBehaviour
 
     private Vector2 _paddleToBallVector;
 
-    private bool _hasStarted = false;
+    private bool _hasStarted;
 
     #region Cached Component References
 
@@ -44,12 +42,12 @@ public class Ball : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-	    if (!_hasStarted)
-	    {
+        if (!_hasStarted)
+        {
             LockBallToPaddle();
             LaunchOnMouseClick();
-	    }
-	}
+        }
+    }
 
     private void LaunchOnMouseClick()
     {
@@ -62,7 +60,8 @@ public class Ball : MonoBehaviour
 
     private void LockBallToPaddle()
     {
-        var paddlePos = new Vector2(paddle1.transform.position.x, paddle1.transform.position.y);
+        var position = paddle1.transform.position;
+        var paddlePos = new Vector2(position.x, position.y);
         transform.position = paddlePos + _paddleToBallVector;
     }
 

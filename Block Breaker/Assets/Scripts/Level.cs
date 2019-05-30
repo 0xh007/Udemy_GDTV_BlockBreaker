@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Level : MonoBehaviour
 {
     #region State
 
     [SerializeField]
-    private int _breakableBlocks;
+    private int breakableBlocks;
 
     #endregion
 
@@ -30,13 +31,13 @@ public class Level : MonoBehaviour
 
     public void CountBlocks()
     {
-        _breakableBlocks++;
+        breakableBlocks++;
     }
 
     public void BlockDestroyed()
     {
-        _breakableBlocks--;
-        if (_breakableBlocks <= 0)
+        breakableBlocks--;
+        if (breakableBlocks <= 0)
         {
             _sceneLoader.LoadNextScene();
         }

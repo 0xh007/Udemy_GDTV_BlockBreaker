@@ -1,36 +1,37 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
+using UnityEngine.Serialization;
 
 public class GameStatus : MonoBehaviour
 {
     #region Configuration parameters
 
+    [FormerlySerializedAs("_gameSpeed")]
     [Range(0.1f, 10f)]
     [SerializeField]
-    private float _gameSpeed = 1f;
+    private float gameSpeed = 1f;
 
-    [SerializeField]
-    private int _pointsPerBlockDestroyed = 83;
+    [FormerlySerializedAs("_pointsPerBlockDestroyed")] [SerializeField]
+    private int pointsPerBlockDestroyed = 83;
 
-    [SerializeField]
-    private TextMeshProUGUI _scoreText;
+    [FormerlySerializedAs("_scoreText")] [SerializeField]
+    private TextMeshProUGUI scoreText;
 
     #endregion
 
     #region State
 
-    [SerializeField]
-    private int _currentScore = 0;
+    [FormerlySerializedAs("_currentScore")] [SerializeField]
+    private int currentScore = 0;
 
     private void Awake()
     {
-        int gameStatusCount = FindObjectsOfType<GameStatus>().Length; 
+        var gameStatusCount = FindObjectsOfType<GameStatus>().Length; 
         if (gameStatusCount > 1)
         {
-            gameObject.SetActive(false);
-            Destroy(gameObject);
+            GameObject o;
+            (o = gameObject).SetActive(false);
+            Destroy(o);
         }
         else
         {
@@ -44,12 +45,12 @@ public class GameStatus : MonoBehaviour
 
     private void Start()
     {
-        _scoreText.text = _currentScore.ToString();
+        scoreText.text = currentScore.ToString();
     }
 
 	private void Update ()
     { 
-	    Time.timeScale = _gameSpeed;
+	    Time.timeScale = gameSpeed;
 	}
 
     #endregion
@@ -58,8 +59,8 @@ public class GameStatus : MonoBehaviour
 
     public void AddToScore()
     {
-        _currentScore += _pointsPerBlockDestroyed;
-        _scoreText.text = _currentScore.ToString();
+        currentScore += pointsPerBlockDestroyed;
+        scoreText.text = currentScore.ToString();
     }
 
     public void ResetGame()

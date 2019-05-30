@@ -1,26 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Block : MonoBehaviour
 {
     #region Configuration Parameters
 
-    [SerializeField]
-    private AudioClip _destroyedSound;
+    [FormerlySerializedAs("_destroyedSound")] [SerializeField]
+    private AudioClip destroyedSound;
 
-    [SerializeField]
-    private GameObject _blockSparksVfx;
+    [FormerlySerializedAs("_blockSparksVfx")] [SerializeField]
+    private GameObject blockSparksVfx;
 
-    [SerializeField]
-    private Sprite[] _hitSprites;
+    [FormerlySerializedAs("_hitSprites")] [SerializeField]
+    private Sprite[] hitSprites;
 
     #endregion
 
     #region State
 
-    [SerializeField]
-    private int _timesHit;
+    [FormerlySerializedAs("_timesHit")] [SerializeField]
+    private int timesHit;
 
     #endregion
 
@@ -50,7 +49,7 @@ public class Block : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D()
     {
         if (gameObject.CompareTag("Breakable"))
         {
@@ -60,10 +59,10 @@ public class Block : MonoBehaviour
 
     private void HandleHit()
     {
-        _timesHit++;
-        int _maxHits = _hitSprites.Length + 1;
+        timesHit++;
+        var maxHits = hitSprites.Length + 1;
 
-        if (_timesHit >= _maxHits)
+        if (timesHit >= maxHits)
         {
             DestroyBlock();
         }
@@ -75,10 +74,10 @@ public class Block : MonoBehaviour
 
     private void ShowNextHitSprite()
     {
-        var spriteIndex = _timesHit - 1;
-        if (_hitSprites[spriteIndex] != null)
+        var spriteIndex = timesHit - 1;
+        if (hitSprites[spriteIndex] != null)
         {
-            GetComponent<SpriteRenderer>().sprite = _hitSprites[spriteIndex];
+            GetComponent<SpriteRenderer>().sprite = hitSprites[spriteIndex];
         }
         else
         {
@@ -88,7 +87,10 @@ public class Block : MonoBehaviour
 
     private void DestroyBlock()
     {
-        AudioSource.PlayClipAtPoint(_destroyedSound, Camera.main.transform.position);
+        if (Camera.main != null)
+        {
+            AudioSource.PlayClipAtPoint(destroyedSound, Camera.main.transform.position);
+        }
         Destroy(gameObject);
         _level.BlockDestroyed();
         _gameStatus.AddToScore();
@@ -97,7 +99,8 @@ public class Block : MonoBehaviour
 
     private void TriggerSparklesVfx()
     {
-        var sparkles = Instantiate(_blockSparksVfx, transform.position, transform.rotation);
+        var transform1 = transform;
+        var sparkles = Instantiate(blockSparksVfx, transform1.position, transform1.rotation);
         Destroy(sparkles, 1f);
     }
 
